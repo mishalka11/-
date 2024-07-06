@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boost Shop</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .boost-item {
+            display: flex;
+            align-items: center;
+            background-color: #222;
+            border-radius: 10px;
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+        }
+
+        .boost-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .boost-details {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .boost-title {
+            font-size: 1.2em;
+        }
+
+        .boost-price {
+            display: flex;
+            align-items: center;
+        }
+
+        .boost-price img {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+        }
+
+        .boost-level {
+            margin-left: auto;
+        }
+
+        .back-button {
+            background-color: #f90;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #fc0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Boost Shop</h1>
+    <div class="boost-item">
+        <img src="placeholder.png" alt="Tap bot">
+        <div class="boost-details">
+            <div class="boost-title">Tap bot</div>
+            <div class="boost-price">
+                <img src="coin.png" alt="Coin">
+                100
+            </div>
+        </div>
+        <div class="boost-level">0 lvl</div>
+    </div>
+    <div class="boost-item">
+        <img src="placeholder.png" alt="Multitap">
+        <div class="boost-details">
+            <div class="boost-title">Multitap</div>
+            <div class="boost-price">
+                <img src="coin.png" alt="Coin">
+                100
+            </div>
+        </div>
+        <div class="boost-level">0 lvl</div>
+    </div>
+    <div class="boost-item">
+        <img src="placeholder.png" alt="Recharging speed">
+        <div class="boost-details">
+            <div class="boost-title">Recharging speed</div>
+            <div class="boost-price">
+                <img src="coin.png" alt="Coin">
+                100
+            </div>
+        </div>
+        <div class="boost-level">0 lvl</div>
+    </div>
+    <div class="boost-item">
+        <img src="placeholder.png" alt="Energy Limit">
+        <div class="boost-details">
+            <div class="boost-title">Energy Limit</div>
+            <div class="boost-price">
+                <img src="coin.png" alt="Coin">
+                100
+            </div>
+        </div>
+        <div class="boost-level">0 lvl</div>
+    </div>
+    <button class="back-button" onclick="goBack()">Back</button>
+    <script>
+        function goBack() {
+            window.close();
+        }
+    </script>
+</body>
+</html>

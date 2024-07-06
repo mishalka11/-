@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NotCoin Web App</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .coin-display {
+            display: flex;
+            align-items: center;
+        }
+
+        .coin-display img {
+            width: 50px;
+            height: 50px;
+            margin-left: 10px;
+        }
+
+        .coin {
+            width: 150px;
+            height: 150px;
+            background-size: cover;
+            border-radius: 50%;
+            margin-top: 40px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .coin.pressed {
+            transform: scale(0.9);
+        }
+
+        .score {
+            font-size: 2em;
+        }
+
+        .level-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .level-progress {
+            width: 200px;
+            height: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+
+        .progress-level {
+            height: 100%;
+            background-color: #0f0;
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+
+        .energy-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .energy-count {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .energy-bar {
+            width: 200px;
+            height: 20px;
+            background-color: #333;
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .energy-level {
+            height: 100%;
+            background-color: #0f0;
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+
+        .floating-text {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, 0);
+            color: #ff0;
+            font-size: 1.5em;
+            opacity: 1;
+            pointer-events: none;
+            animation: floatUp 1s forwards;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translate(-50%, 0);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -100px);
+                opacity: 0;
+            }
+        }
+
+        .boost-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .boost-button img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .boost-shop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            color: #fff;
+            z-index: 1000;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+        }
+
+        .boost-shop h2 {
+            margin-top: 0;
+        }
+
+        .boost-shop .boost-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .boost-shop .boost-item img {
+            width: 50px;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        .boost-shop .close-button {
+            display: block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="coin-display">
+            <div class="score" id="score">0</div>
+            <img src="coin0.png" alt="Coin" id="coinImage">
+        </div>
+        <div class="level-container">
+            <div id="levelName">Bronze</div>
+            <div class="level-progress">
+                <div class="progress-level" id="progressLevel"></div>
+            </div>
+        </div>
+        <div class="coin" id="coin" style="background-image: url('coin0.png');"></div>
+        <div class="energy-container">
+            <div class="energy-count" id="energyCount">1000/1000</div>
+            <div class="energy-bar">
+                <div class="energy-level" id="energyLevel"></div>
+            </div>
+        </div>
+        <div class="boost-button" id="boostButton">
+            <img src="boost-icon.png" alt="Boost">
+            <button>Boost</button>
+        </div>
+    </div>
+    <div class="boost-shop" id="boostShop">
+        <h2>Boost Shop</h2>
+        <div class="boost-item">
+            <div style="width: 50px; height: 50px; background-color: grey;"></div>
+            <span>Tap bot - 100 coins</span>
+        </div>
+        <div class="boost-item">
+            <div style="width: 50px; height: 50px; background-color: grey;"></div>
+            <span>Multitap - 100 coins</span>
+        </div>
+        <div class="boost-item">
+            <div style="width: 50px; height: 50px; background-color: grey;"></div>
+            <span>Recharging speed - 100 coins</span>
+        </div>
+        <div class="boost-item">
+            <div style="width: 50px; height: 50px; background-color: grey;"></div>
+            <span>Energy Limit - 100 coins</span>
+        </div>
+        <button class="close-button" id="closeBoostShop">Back</button>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
