@@ -5,60 +5,60 @@ let score = 0;
 
 // Массив путей к изображениям монет
 const coinImages = [
-    'coin0.png',
-    'coin1.png',
-    'coin2.png',
-    'coin3.png',
-    'coin4.png',
-    'coin5.png',
-    'coin6.png',
-    'coin7.png'
+    'coin0.png', // 0-100 монет
+    'coin1.png', // 101-200 монет
+    'coin2.png', // 201-300 монет
+    'coin3.png', // 301-400 монет
+    'coin4.png', // 401-500 монет
+    'coin5.png', // 501-600 монет
+    'coin6.png', // 601-700 монет
+    'coin7.png'  // 701-800 монет
 ];
 
-const levels = [
-    'Bronze',
-    'Silver',
-    'Gold',
-    'Platinum',
-    'Brilliant',
-    'Diamond',
-    'Master',
-    'Legend'
+// Массив названий уровней
+const levelNames = [
+    'Bronze', // 0-100 монет
+    'Silver', // 101-200 монет
+    'Gold', // 201-300 монет
+    'Platinum', // 301-400 монет
+    'Diamond', // 401-500 монет
+    'Master', // 501-600 монет
+    'Grandmaster', // 601-700 монет
+    'Legend'  // 701-800 монет
 ];
 
-// Функция обновления изображения монетки
-function updateCoinImage() {
+// Функция обновления изображения монетки и уровня
+function updateCoinImageAndLevel() {
     const index = Math.min(Math.floor(score / 100), coinImages.length - 1);
     document.getElementById('coin').style.backgroundImage = `url('${coinImages[index]}')`;
     document.getElementById('coinImage').src = coinImages[index];
+
+    const levelIndex = Math.min(Math.floor(score / 100), levelNames.length - 1);
+    document.getElementById('levelName').textContent = levelNames[levelIndex];
+
+    const nextLevelScore = (levelIndex + 1) * 100;
+    const progress = (score % 100) / 100 * 100;
+    document.getElementById('progressLevel').style.width = progress + '%';
 }
 
 // Функция обновления отображения уровня энергии
 function updateEnergyDisplay() {
     const energyLevel = (currentEnergy / maxEnergy) * 100;
-    document.getElementById('energyLevel').style.width = energyLevel + '%';
+    const energyLevelElement = document.getElementById('energyLevel');
+    energyLevelElement.style.width = energyLevel + '%';
     document.getElementById('energyCount').textContent = `${currentEnergy}/${maxEnergy}`;
 
     if (energyLevel <= 30) {
-        document.getElementById('energyLevel').style.backgroundColor = '#f00'; // Красный цвет
+        energyLevelElement.style.backgroundColor = '#f00'; // Красный цвет
     } else if (energyLevel <= 60) {
-        document.getElementById('energyLevel').style.backgroundColor = '#ff0'; // Желтый цвет
+        energyLevelElement.style.backgroundColor = '#ff0'; // Желтый цвет
     } else {
-        document.getElementById('energyLevel').style.backgroundColor = '#0f0'; // Зеленый цвет
+        energyLevelElement.style.backgroundColor = '#0f0'; // Зеленый цвет
     }
 }
 
-// Функция обновления отображения уровня и прогресса
-function updateLevelDisplay() {
-    const levelIndex = Math.floor(score / 100);
-    document.getElementById('levelName').textContent = levels[levelIndex] || levels[levels.length - 1];
-    const progress = (score % 100) / 100 * 100;
-    document.getElementById('progressLevel').style.width = progress + '%';
-}
-
-// Инициализация отображения энергии и уровня при загрузке страницы
+// Инициализация отображения энергии при загрузке страницы
 updateEnergyDisplay();
-updateLevelDisplay();
 
 // Функция для создания и анимации текста
 function showFloatingText() {
@@ -75,28 +75,19 @@ function showFloatingText() {
 }
 
 // Обработчик нажатия на монетку
-function handleCoinClick() {
+document.getElementById('coin').addEventListener('click', () => {
     score++;
     document.getElementById('score').textContent = score;
 
     showFloatingText();
-    updateCoinImage(); // Обновление монетки
-    updateLevelDisplay(); // Обновление уровня и прогресса
+    updateCoinImageAndLevel(); // Обновление монетки и уровня
 
     // Уменьшаем уровень энергии
     if (currentEnergy > 0) {
         currentEnergy--;
         updateEnergyDisplay();
     }
-
-    // Вибрация при нажатии на монетку
-    if (navigator.vibrate) {
-        navigator.vibrate(100);
-    }
-}
-
-// Поддержка мультитач на монетке
-document.getElementById('coin').addEventListener('touchstart', handleCoinClick);
+});
 
 // Восстанавливаем 1 единицу энергии каждые 5 секунд
 setInterval(() => {
@@ -108,7 +99,8 @@ setInterval(() => {
 
 // Обработчик нажатия на кнопку Boost
 document.getElementById('boostButton').addEventListener('click', () => {
-    window.open('boost.html', '_blank');
+    currentEnergy = Math.min(currentEnergy + 100, maxEnergy);
+    updateEnergyDisplay();
 });
 
 // Анимация нажатия на монетку
@@ -117,7 +109,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const scoreDisplay = document.getElementById('score');
 
     coin.addEventListener('click', function() {
-        handleCoinClick();
+        // Увеличение счетчика на 1
+        score++;
+        scoreDisplay.textContent = score;
 
         // Добавление анимации нажатия
         coin.classList.add('pressed');
@@ -126,3 +120,38 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 200); // время в миллисекундах, в течение которого будет происходить анимация
     });
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const boostsButton = document.getElementById('boostButton');
+    const boostsModal = document.getElementById('boostsModal');
+    const boostsCloseButton = document.getElementById('boostsCloseButton');
+    const buyButtons = document.querySelectorAll('.buy-button');
+
+    boostsButton.addEventListener('click', () => {
+        boostsModal.style.display = 'block';
+    });
+
+    boostsCloseButton.addEventListener('click', () => {
+        boostsModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === boostsModal) {
+            boostsModal.style.display = 'none';
+        }
+    });
+
+    buyButtons.forEach(button => {
+        button.addEventListener('click', (event) => {
+            const boostId = event.target.getAttribute('data-boost');
+            buyBoost(boostId);
+        });
+    });
+
+    function buyBoost(boostId) {
+        // Replace this with your actual buying logic
+        console.log(`Bought boost ${boostId}`);
+        // Decrease coins, update UI, etc.
+    }
+});
+
